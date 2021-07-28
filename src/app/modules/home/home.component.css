@@ -1,0 +1,51 @@
+.heading {
+    text-align: center !important;
+}
+
+.column{
+    padding: 10px;
+}
+
+#col-1 {
+    position: relative;
+    width: 50%;
+    float: left;
+    height: 100%;
+    /*background-color: #282828;*/
+    z-index: 1010101010
+}
+
+#col-2 {
+    position: relative;
+    width: 50%;
+    float: left;
+    height: 100%;
+    /*background-color: #0080ff;*/
+    z-index: 1010101010
+}
+
+.my-custom-scrollbar {
+    position: relative;
+    height: 250px;
+    overflow: auto;
+}
+
+.table-wrapper-scroll-y {
+    display: block;
+}
+
+#investment_table{
+    padding: 5px;
+}
+
+#summary_table{
+    padding: 5px;
+}
+
+.dropdown-menu{
+    background-color: rgb(205, 184, 224);
+}
+
+.file_select{
+    padding: 5px;
+}
