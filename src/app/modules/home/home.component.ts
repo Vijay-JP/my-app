@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpService } from '../../core/services/http.service';
 
-import { InvestmentsModel } from '../../shared/model/investments.model';
+import { InvestmentsModel, UniqueInvestmentsModel } from '../../shared/model/investments.model';
 
 @Component({
   selector: 'app-home',
@@ -12,9 +12,11 @@ import { InvestmentsModel } from '../../shared/model/investments.model';
 })
 export class HomeComponent implements OnInit {
 
+  invForm!: FormGroup;
   fileDetails!: FormGroup;
   user:any;
   investmentModel:InvestmentsModel[]=[];
+  uniqueInvModel:UniqueInvestmentsModel[]=[];
   loading: boolean = false;
   file: any = []; 
 
@@ -25,7 +27,6 @@ export class HomeComponent implements OnInit {
   ) { }
 
   logout() {
-    console.log('Logout Method');
     sessionStorage.clear;
     this.route.navigate(['']);
   }
@@ -37,15 +38,26 @@ export class HomeComponent implements OnInit {
     console.log(this.user);
 
     this.getInvestments('showInvestments');
+    this.getUniqueInvestments('uniqueInvestmentDetails');
     
+    this.invForm = this.formBuilder.group({
+      portal: ['', Validators.required],
+      investment_date: ['', Validators.required],
+      amount: ['', Validators.required]
+    });
   }
 
   getInvestments(value: string) {
-    this.httpservice.getCall('showInvestments')
+    this.httpservice.getCall(value)
         .subscribe((data : any) => {
-        console.log(data);
         this.investmentModel = (data);
-        console.log(this.investmentModel);
+    });
+  }
+
+  getUniqueInvestments(value: string) {
+    this.httpservice.getCall(value)
+        .subscribe((data : any) => {
+        this.uniqueInvModel = (data);
     });
   }
 
@@ -59,13 +71,17 @@ export class HomeComponent implements OnInit {
       this.loading = !this.loading;
       console.log(this.file);
       this.httpservice.upload('loadInvestment', this.file).subscribe(
-          (event: any) => {
-            console.log(event);
-              if (typeof (event) === 'object') {
-                  this.loading = false; 
-              }
+          (response: Response) => {
+            this.loading = false; 
           }
       );
+  }
+
+  onInvSubmit(){
+    this.httpservice.postCall('insertInvestment', this.invForm.value)
+        .subscribe((data : any) => {
+        console.log(data);
+    });
   }
 
 }

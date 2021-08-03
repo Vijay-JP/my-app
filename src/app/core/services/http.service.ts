@@ -11,6 +11,7 @@ export class HttpService {
    
 
   headers = new HttpHeaders({
+    'Accept': 'application/json',
     'Content-Type': 'application/json'
   });
 

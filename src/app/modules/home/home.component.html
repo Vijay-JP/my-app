@@ -54,7 +54,6 @@
             <table class="table table-bordered table-striped mb-0">
                 <thead>
                     <tr>
-                        <th>#</th>
                         <th>Portal</th>
                         <th>Invested Date</th>
                         <th>Amount</th>
@@ -62,7 +61,6 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let invList of investmentModel">
-                        <td>{{invList.investment_id}}</td>
                         <td>{{invList.portal}}</td>
                         <td>{{invList.investment_date}}</td>
                         <td>{{invList.amount}}</td>
@@ -71,22 +69,19 @@
             </table>
         
         </div>
-    </div>
-    <div id="col-2">
+
         <h1 class="heading">Summary</h1>
         <div class="table-wrapper-scroll-y my-custom-scrollbar" id="summary_table">
 
             <table class="table table-bordered table-striped mb-0">
                 <thead>
                     <tr>
-                        <th>#</th>
                         <th>Portal</th>
                         <th>Amount</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let invList of investmentModel">
-                        <td>{{invList.investment_id}}</td>
+                    <tr *ngFor="let invList of uniqueInvModel">
                         <td>{{invList.portal}}</td>
                         <td>{{invList.amount}}</td>
                     </tr>
@@ -95,6 +90,34 @@
         
         </div>
 
+    </div>
+    <div id="col-2">
+        
+        <h4 class="text-center">Input Investment Details</h4>
+        <div class="card-body">
+            <form [formGroup]="invForm" (ngSubmit)="onInvSubmit()">
+                <div class="form-group">
+                    <label for="Portal">Portal</label>
+                    <input type="text" formControlName="portal" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="Investment Date">Investment Date</label>
+                    <input type="date" formControlName="investment_date" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="Amount">Amount</label>
+                    <input type="text" formControlName="amount" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <button [disabled]="loading" class="btn btn-primary">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                        Submit
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <h4 class="text-center">Upload Investment Document(.xlsx)</h4>
         <div class="text-center">
             <input type="file" (change)="onChange($event)">
             <button (click)="onUpload()" class="btn btn-success">
